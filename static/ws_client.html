@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>bitcoin &nbsp;|&nbsp; exchange</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="./static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="./static/css/client-view.css" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" href="./static/img/ico/favicon.ico" type="image/x-icon">
+
+    <!-- Custom Fonts -->
+    <link href="./static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom Google Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+
+
+    <!-- jQuery -->
+    <script src="./static/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="./static/js/bootstrap.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="./static/js/client-view.js"></script>
+
+    <!-- Flot -->
+    <script src="./static/js/vendor/flot/jquery.flot.min.js"></script>
+    <script src="./static/js/vendor/flot/jquery.flot.tooltip.min.js"></script>
+
+   <link rel="stylesheet" href="./static/css/btcdonate.css">
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+        <div id="page-wrapper" style="min-height: 611px;">
+            <div class="row row-full-width">
+                <div class="col-lg-2 column">
+                    <div class="row section-header">
+                        <h5>AVAILABLE BALANCE</h5>
+                    </div>
+                    <div class="row">
+                        <br>
+                        <div class="col-lg-4">
+                            <p>BTC</p>
+                        </div>
+                        <div class="col-lg-8">
+                            <p class="right" id="btc-balance"><strong></strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <p>BRL</p>
+                        </div>
+                        <div class="col-lg-8">
+                            <p class="right" id="brl-balance"><strong></strong></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <p>ClientID</p>
+                        </div>
+                        <div class="col-lg-8">
+                            <p class="right" id="ClientID"><strong></strong></p>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#buy" data-toggle="tab" id="buy-tab">BUY</a>
+                                </li>
+                                <li class="tab"><a href="#sell" data-toggle="tab" id="sell-tab">SELL</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="buy">
+                                    <br>
+                                    <input class="form-control" placeholder="Amount (BTC)" id="btc-buy-amount" type="number">
+                                    <br>
+                                    <input class="form-control" placeholder="Price Minimum / BTC" id="btc-buy-price-amount-min" type="number">
+                                    <br>
+                                    <input class="form-control" placeholder="Price Maximum / BTC" id="btc-buy-price-amount-max" type="number">
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-lg-8">
+                                            <p>Process Enable?</p>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <p class="right" id="btc-buy-return"><strong>False</strong></p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="centered">
+                                        <button type="button" class="btn btn-custom btn-primary btn-lg" id="buyx">BUY Start</button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="sell">
+                                    <br>
+                                    <input class="form-control" placeholder="Amount (BTC)" id="btc-sell-amount" type="number">
+                                    <br>
+                                    <input class="form-control" placeholder="Price Minimum / BTC" id="btc-sell-price-amount-min" type="number">
+                                    <br>
+                                    <input class="form-control" placeholder="Price Maximum / BTC" id="btc-sell-price-amount-max" type="number">
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-lg-8">
+                                            <p>Process Enable?</p>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <p class="right" id="btc-sell-return"><strong>False</strong></p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="centered">
+                                        <button type="button" class="btn btn-custom btn-primary btn-lg" id="sellx">SELL Start</button>
+                                    </div>
+                                </div>
+
+                                	<div class="row account-actions"><hr></div>
+                        			<div class="row account-actions"><div class="col-lg-6">Donate:</div><br>
+                                    <div class="col-lg-6" style="font-size:10px">
+                                    <a href="bitcoin:115mWCwsBqsa4ASEt4WfDs2uoSfcrADPT9"
+                                        data-btcaddress="115mWCwsBqsa4ASEt4WfDs2uoSfcrADPT9">
+                                        115mWCwsBqsa4ASEt4WfDs2uoSfcrADPT9
+                                    </a>
+                                    <script type="text/javascript" src="./static/js/jquery-1.11.0.min.js"></script>
+                                    <script type="text/javascript" src="./static/js/jquery.qrcode-0.7.0.min.js"></script>
+                                    <script type="text/javascript" src="./static/js/btcdonate.js"></script>
+
+                                    <script type="text/javascript">
+                                        btcdonate({fill: "#000000",radius: 0});
+                                    </script>
+
+                                    </div></div>
+                                    <div class="row account-actions"><hr></div>
+                                    <div class="row account-actions"><div class="col-lg-6">Developer:<br>
+                                    Rafael_Dornelas<br>
+                                    rafaelwdornelas@gmail.com</div></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-3 column">
+                    <div class="row section-header">
+                    <h5>ORDER BOOK - BIDS</h5>
+                    </div>
+                    <div class="order-book-place-holder">
+                    	<table id="personDataTablebids" style="margin: 1em 0; min-width: 300px;">
+
+                    	</table>
+
+                    </div>
+                </div>
+                <div class="col-lg-3 column">
+                    <div class="row section-header">
+                        <h5>ORDER BOOK- ASKS</h5>
+                    </div>
+                    <div class="open-orders-place-holder"></div>
+                    <table id="personDataTableasks" style="margin: 1em 0; min-width: 300px;"></table>
+                </div>
+                <div class="col-lg-5 col-lg-4 column">
+                    <div class="row section-header">
+                        <h5>OPEN ORDERS</h5>
+                    </div>
+                    <div class="open-orders-place-holder">
+                    	<table id="openorders" style="margin: 1em 0; min-width: 300px;"></table>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-lg-4">
+                    <div class="row section-header">
+                        <h5>LEDGER</h5>
+                    </div>
+                    <div class="open-orders-place-holder">
+                    	<table id="ledger" style="margin: 1em 0; min-width: 300px;"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+<script>
+    $('#buyx').click(function(){
+        $.ajax({
+            url: "/buy",
+            type: 'post',
+            data: {
+                'btc-buy-amount': $('#btc-buy-amount').val(),
+                'btc-buy-price-amount-min': $('#btc-buy-price-amount-min').val(),
+                'btc-buy-price-amount-max': $('#btc-buy-price-amount-max').val()
+                }
+            }).done(function(data){
+                $('#messages').html('<b>'+data.message+'</b>');
+         });
+    });
+    $('#sellx').click(function(){
+        $.ajax({
+            url: "/sell",
+            type: 'post',
+            data: {
+                'btc-sell-amount': $('#btc-sell-amount').val(),
+                'btc-sell-price-amount-min': $('#btc-sell-price-amount-min').val(),
+                'btc-sell-price-amount-max': $('#btc-sell-price-amount-max').val()
+                }
+            }).done(function(data){
+                $('#messages').html('<b>'+data.message+'</b>');
+         });
+    });
+
+    function getStats(){
+        $.get("/stats",
+            function(data){
+                $('#btc-sell-return').html(data.sell);
+                $('#btc-buy-return').html(data.buy);
+        }).always(function(data,status) {
+            if(status == 'success'){
+                setTimeout(getStats,1000);
+            }else{
+                $('#btc-sell-return').html('<font color="red">Status unvaliable</font>');
+                $('#btc-buy-return').html('<font color="red">Status unvaliable</font>');
+                console.log("Error getting stats. Delaying stats pooling");
+                setTimeout(getStats,5000);
+           }
+       });
+    }
+    setTimeout(getStats,1000);
+
+    </script>
+
+    <script>
+	function getBalance(){
+        $.get("/getBalance",
+            function(data){
+                $('#btc-balance').html(data.BTC);
+				$('#brl-balance').html(data.BRL);
+				$('#ClientID').html(data.ClientID);
+
+        }).always(function(data,status) {
+            if(status == 'success'){
+                setTimeout(getBalance,1000);
+            }else{
+                $('#btc-balance').html('<font color="red">Status unvaliable</font>');
+                console.log("Error getting stats. Delaying stats pooling");
+                setTimeout(getBalance,5000);
+           }
+       });
+    }
+    setTimeout(getBalance,1000);
+    </script>
+    <script>
+	function getorderbook(){
+        $.get("/getorderbook",
+            function(data){
+            	$("#personDataTablebids").empty();
+            	$("#personDataTableasks").empty();
+            	var idClient = $('#ClientID').text();
+            	console.log(idClient);
+            	drawRowmenubids();
+            	drawRowmenuasks();
+            	drawTablebids(data['bids']);
+            	drawTableasks(data['asks']);
+            	function drawTablebids(data) {
+    				for (var i = 0; i < 28; i++) {
+        			drawRowbids(data[i]);
+    				}
+				}
+				function drawTableasks(data) {
+    				for (var i = 0; i < 28; i++) {
+        			drawRowasks(data[i]);
+    				}
+				}
+			function drawRowbids(rowData) {
+				if (idClient == rowData[2]) {
+    				var row = $("<tr style='color: #00FF00;'/>")
+    			} else {
+    				var row = $("<tr />")
+    			}
+
+    			$("#personDataTablebids").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
+
+    			row.append($("<td>" + rowData[2] + "</td>"));
+    			row.append($("<td>   ฿ " + parseFloat(rowData[1]).toFixed(6) + "</td>   "));
+    			row.append($("<td>" + parseFloat(rowData[0]).toFixed(2) + "</td>"));
+			}
+			function drawRowasks(rowData) {
+				if (idClient == rowData[2]) {
+    				var row = $("<tr style='color: #FF0000;'/>")
+    			} else {
+    				var row = $("<tr />")
+    			}
+    			$("#personDataTableasks").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
+    			row.append($("<td>" + parseFloat(rowData[0]).toFixed(2) + "</td>"));
+    			row.append($("<td>   ฿ " + parseFloat(rowData[1]).toFixed(6) + "</td>   "));
+    			row.append($("<td>" + rowData[2] + "</td>"));
+			}
+			function drawRowmenubids() {
+    			var row = $("<tr />")
+    			$("#personDataTablebids").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
+    			row.append($("<td>" + "Buyer" + "</td>"));
+    			row.append($("<td>"  + "Quantity" + "</td>   "));
+    			row.append($("<td>" + "Price" + "</td>"));
+			}
+			function drawRowmenuasks() {
+    			var row = $("<tr />")
+    			$("#personDataTableasks").append(row); //this will append tr element to table... keep its reference for a while since we will add cels into it
+
+    			row.append($("<td>" + "Price" + "</td>"));
+    			row.append($("<td>"  + "Quantity" + "</td>   "));
+    			row.append($("<td>" + "Buyer" + "</td>"));
+			}
+
+        }).always(function(data,status) {
+            if(status == 'success'){
+                setTimeout(getorderbook,1000);
+            }else{
+                // $('#btc-balance').html('<font color="red">Status unvaliable</font>');
+                console.log("Error getting stats. Delaying stats pooling");
+                setTimeout(getorderbook,5000);
+           }
+       });
+    }
+    setTimeout(getorderbook,1000);
+    </script>
+     <script>
+	function getledger(){
+        $.get("/getledger",
+            function(data){
+            	$("#ledger").empty();
+            	drawRowmenu();
+            	drawTable(data);
+            	function drawTable(data) {
+    				for (var i = 0; i < data.length; i++) {
+        			drawRow(data[i]);
+    				}
+				}
+			function drawRow(rowData) {
+    			var row = $("<tr />")
+    			$("#ledger").append(row);
+    			row.append($("<td>" + rowData.LedgerID + "</td>"));
+    			row.append($("<td>" + parseFloat(rowData.Amount / 1e8).toFixed(6) + " " + rowData.Currency + "</td>   "));
+    			row.append($("<td>" + switchLedger(rowData.Description) + "</td>"));
+			}
+			function drawRowmenu() {
+    			var row = $("<tr />")
+    			$("#ledger").append(row);
+    			row.append($("<td>" + "LedgerID" + "</td>"));
+    			row.append($("<td>"  + "Amount" + "</td>   "));
+    			row.append($("<td>" + "Description" + "</td>"));
+			}
+        }).always(function(data,status) {
+            if(status == 'success'){
+                setTimeout(getledger,1000);
+            }else{
+                console.log("Error getting stats. Delaying stats pooling");
+                setTimeout(getledger,5000);
+           }
+       });
+    }
+    function switchLedger(s) {
+  	switch(s) {
+          case 'B':
+            return "Bonus";
+          case 'D':
+            return "Deposit";
+          case 'DF':
+            return "Fee on deposit";
+          case 'DFC':
+            return "Deposit fee referral";
+          case 'W':
+            return "Withdraw";
+          case 'WF':
+            return "Fee on withdraw";
+          case 'WFC':
+            return "Withdrawal fee referral";
+          case 'WFR':
+            return "Discount on the withdrawal fee";
+          case 'WFRV':
+            return "Revert withdrawal fee";
+          case 'T':
+            return "Trade";
+          case 'TF':
+            return "Fee on trade";
+          case 'TFC':
+            return "Trade fee referral";
+          case 'TFR':
+            return "Trade fee refund";
+          case 'P':
+            return "Point";
+          default:
+            return s;
+  		};
+}
+
+    setTimeout(getledger,3000);
+    </script>
+    <script>
+	function getorders(){
+        $.get("/getorders",
+            function(data){
+            	$("#openorders").empty();
+            	drawRowmenu();
+            	drawTable(data);
+            	function drawTable(data) {
+    				for (var i = 0; i < data.length; i++) {
+        			drawRow(data[i]);
+    				}
+				}
+			function drawRow(rowData) {
+				if (rowData.OrdStatus =='0') {
+					var row = $("<tr />")
+    				$("#openorders").append(row);
+    				row.append($("<td>" + rowData.OrderID + "</td>"));
+    				var Side = rowData.Side;
+    				if (Side == "1" ) {
+    					Side = 'Buy';
+    				} else {
+    					Side = 'Sell';
+    				}
+    				var OrderQty = parseFloat(rowData.OrderQty / 100000000);
+    				var Price = parseFloat(rowData.Price / 100000000);
+    				row.append($("<td>" + Side +  "</td>   "));
+    				row.append($("<td>" + OrderQty.toFixed(6) + "</td>"));
+    				row.append($("<td>" + Price.toFixed(2) + "</td>"));
+				}
+
+			}
+			function drawRowmenu() {
+    			var row = $("<tr />")
+    			$("#openorders").append(row);
+    			row.append($("<td>" + "OrderID" + "</td>"));
+    			row.append($("<td>"  + "Side" + "</td>   "));
+    			row.append($("<td>" + "OrderQty" + "</td>"));
+    			row.append($("<td>" + "Price" + "</td>"));
+			}
+        }).always(function(data,status) {
+            if(status == 'success'){
+                setTimeout(getorders,1000);
+            }else{
+                console.log("Error getting stats. Delaying stats pooling");
+                setTimeout(getorders,5000);
+           }
+       });
+    }
+
+    setTimeout(getorders,1000);
+    </script>
+</body>
+
+</html>

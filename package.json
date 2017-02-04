@@ -1,0 +1,28 @@
+{
+  "name": "foxbitbot",
+  "version": "1.0.0",
+  "description": "Buy and sell automatic foxbit exchange",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "foxbit",
+    "bitcoin",
+    "btc",
+    "blinktrade",
+    "trade",
+    "brazil"
+  ],
+  "author": "Rafael Dornelas: rafaelwdornelas@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "beepbeep": "^1.2.0",
+    "blinktrade": "0.0.4",
+    "dateformat": "^2.0.0",
+    "open": "0.0.5",
+    "set-terminal-title": "^1.0.1",
+    "technicalindicators": "^0.2.14"
+  }
+}
