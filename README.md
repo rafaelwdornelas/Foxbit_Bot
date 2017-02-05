@@ -3,14 +3,14 @@ Bot Automatic Trader Foxbit - Buy & Sell.
 
 Using API  [Blinktrade](https://blinktrade.com/docs/#trade-api).
 
-![Panel](http://image.prntscr.com/image/a91f9cd8468a44bfa145bc65c8016e83.png)
+![Panel](http://image.prntscr.com/image/6c2313f622e34b52b7d309179ddeeb42.png)
 
 ## Running Locally
 
 Make sure you have [Node.js](http://nodejs.org/) installed.
 
 ```sh
-$ git clone git@github.com:rafaelwdornelas/Foxbit_Bot.git # or clone your own fork
+$ git clone https://github.com/rafaelwdornelas/Foxbit_Bot.git # or clone your own fork
 $ cd Foxbit_Bot
 $ npm install
 $ npm start
