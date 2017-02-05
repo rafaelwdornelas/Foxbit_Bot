@@ -10,7 +10,7 @@ Using API  [Blinktrade](https://blinktrade.com/docs/#trade-api).
 Make sure you have [Node.js](http://nodejs.org/) installed.
 
 ```sh
-$ git clone git@github.com:rafaelwdornelas/Foxbit_Bot.git # or clone your own fork
+$ git clone https://github.com/rafaelwdornelas/Foxbit_Bot.git # or clone your own fork
 $ cd Foxbit_Bot
 $ npm install
 $ npm start
