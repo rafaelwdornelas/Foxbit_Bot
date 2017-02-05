@@ -3,6 +3,7 @@ Bot Automatic Trader Foxbit - Buy & Sell.
 
 Using API  [Blinktrade](https://blinktrade.com/docs/#trade-api).
 
+![Panel](http://image.prntscr.com/image/a91f9cd8468a44bfa145bc65c8016e83.png)
 
 ## Running Locally
 
