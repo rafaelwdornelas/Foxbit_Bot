@@ -201,13 +201,29 @@
     <!-- /#wrapper -->
 <script>
     $('#buyx').click(function(){
+        if ($('#btc-buy-amount').val()=="")
+        {
+            alert ("amount not value");
+            return false;
+        }
+        if ($('#btc-buy-price-amount-min').val()=="")
+        {
+            alert ("price min not value");
+            return false;
+        }
+        if ($('#btc-buy-price-amount-max').val()=="")
+        {
+            alert ("price max not value");
+            return false;
+        }
+
         $.ajax({
             url: "/buy",
             type: 'post',
             data: {
-                'btc-buy-amount': $('#btc-buy-amount').val(),
-                'btc-buy-price-amount-min': $('#btc-buy-price-amount-min').val(),
-                'btc-buy-price-amount-max': $('#btc-buy-price-amount-max').val()
+                'btcbuyamount': $('#btc-buy-amount').val(),
+                'btcbuypriceamountmin': $('#btc-buy-price-amount-min').val(),
+                'btcbuypriceamountmax': $('#btc-buy-price-amount-max').val()
                 }
             }).done(function(data){
                 $('#messages').html('<b>'+data.message+'</b>');
@@ -218,9 +234,9 @@
             url: "/sell",
             type: 'post',
             data: {
-                'btc-sell-amount': $('#btc-sell-amount').val(),
-                'btc-sell-price-amount-min': $('#btc-sell-price-amount-min').val(),
-                'btc-sell-price-amount-max': $('#btc-sell-price-amount-max').val()
+                'btcsellamount': $('#btc-sell-amount').val(),
+                'btcsellpriceamountmin': $('#btc-sell-price-amount-min').val(),
+                'btcsellpriceamountmax': $('#btc-sell-price-amount-max').val()
                 }
             }).done(function(data){
                 $('#messages').html('<b>'+data.message+'</b>');

@@ -19,16 +19,16 @@ var Bestorder = {bids: 0,asks: 0};
 var enableorder = {bids: false,asks: false};
 var TradeLimits = {
 						BUY: {
-              active: true, //There is an active order
+              active: false, //There is an active order
 							min: 0.0, //Minimum purchase value
 							max: 0.0, //Maximum purchase value
-							amount: 0.0001 //Total bitcoin value for purchase
+							amount: 0.0 //Total bitcoin value for purchase
 							},
 						SELL: {
               active: false, //There is an active order
               min: 0.0, //Minimum value for sale
 							max: 0.0, //Maximum value for sale
-							amount: 0.0001 //Total bitcoin value for sale
+							amount: 0.0 //Total bitcoin value for sale
 							}
 					 };
 var blinktradeFOX = new BlinkTradeRest({
@@ -53,20 +53,50 @@ var server = http.createServer( function(req, res, next) {
         var body = '';
         req.on('data', function (data) {
             body += data;
-            console.log(body);
+            var POST = {};
+            body = body.split('&');
+            for (var i = 0; i < body.length; i++) {
+                var _body = body[i].split("=");
+                POST[_body[0]] = _body[1];
+            }
+            console.log(POST);
+            if(req.url=='/buy') {
+              console.log("POST Buy");
+              if (TradeLimits.BUY.active == false) {
+                TradeLimits.BUY.active = true;
+                TradeLimits.BUY.min = POST.btcbuypriceamountmin;
+                TradeLimits.BUY.max = POST.btcbuypriceamountmax;
+                TradeLimits.BUY.amount = POST.btcbuyamount;
+              } else {
+                TradeLimits.BUY.active = false;
+                TradeLimits.BUY.min = 0;
+                TradeLimits.BUY.max = 0;
+                TradeLimits.BUY.amount = 0;
+                myOrdersList_Remove("1");
+              }
+              res.writeHead(200, {'Content-Type': 'application/json'});
+              res.end(JSON.stringify({ activeNodes: 10 }));
+            } else if (req.url=='/sell') {
+              console.log("POST Sell");
+              if (TradeLimits.SELL.active == false) {
+                TradeLimits.SELL.active = true;
+                TradeLimits.SELL.min = POST.btcsellpriceamountmin;
+                TradeLimits.SELL.max = POST.btcsellpriceamountmax;
+                TradeLimits.SELL.amount = POST.btcsellamount;
+              } else {
+                TradeLimits.SELL.active = false;
+                TradeLimits.SELL.min = 0;
+                TradeLimits.SELL.max = 0;
+                TradeLimits.SELL.amount = 0;
+                myOrdersList_Remove("2");
+              }
+              res.writeHead(200, {'Content-Type': 'application/json'});
+              res.end(JSON.stringify({ activeNodes: 10 }));
+            }
         });
         req.on('end', function () {});
         res.writeHead(200, {'Content-Type': 'text/html'});
         res.end('post received');
-        if(req.url=='/buy') {
-            console.log("POST Buy");
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({ activeNodes: 10 }));
-        } else if (req.url=='/sell') {
-            console.log("POST Sell");
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({ activeNodes: 10 }));
-        }
     }
     else
     {
@@ -203,16 +233,25 @@ function orderbook() {
       if (TradeLimits.BUY.active == true) {
         //console.log(currentidbids ,"<>", ClientID,"&&",Bestorder.bids,"<",parseFloat(Bestorder.asks - 0.01))
 				if (currentidbids != ClientID && Bestorder.bids < parseFloat(Bestorder.asks - 0.01)) {
-					if (enableorder.bids == true) {
+          if (enableorder.bids == true) {
+            if (TradeLimits.BUY.min > Bestorder.bids + 0.01 || TradeLimits.BUY.max < Bestorder.bids + 0.01) {return}
 						enableorder.bids = false;
             logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "]\x1b[91m Change bests order book BRL \x1b[0m")
             beep(1);
             myOrdersList_Remove("1");
           } else {
 						enableorder.bids = true;
-            SendOrderBuy(Bestorder.bids + 0.01)
+            var valuenew = Bestorder.bids + 0.01;
+            if (TradeLimits.BUY.min > valuenew ) {
+              valuenew = TradeLimits.BUY.min
+            }
+            if (TradeLimits.BUY.max < valuenew ) {
+              valuenew = TradeLimits.BUY.max
+            }  
+            SendOrderBuy(valuenew)
           }
         } else if ((parseFloat(orderbook['bids'][0][0]) - 0.01).toFixed(2) != parseFloat(orderbook['bids'][1][0])) {
+          if (TradeLimits.BUY.min > Bestorder.bids + 0.01 || TradeLimits.BUY.max < Bestorder.bids + 0.01) {return}
   				myOrdersList_Remove("1");
   			}
       }
@@ -220,15 +259,24 @@ function orderbook() {
         //console.log(currentidasks ,"<>", ClientID,"&&",Bestorder.bids,"<",parseFloat(Bestorder.asks + 0.01))
 			  if (currentidasks != ClientID && Bestorder.bids < parseFloat(Bestorder.asks + 0.01)) {
           if (enableorder.asks == true) {
+            if (TradeLimits.SELL.min > Bestorder.asks - 0.01 || TradeLimits.SELL.max < Bestorder.asks - 0.01) {return}
 						enableorder.asks = false;
             logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "]\x1b[91m Change bests order book BRL \x1b[0m")
             beep(1);
             myOrdersList_Remove("2");
           } else {
             enableorder.asks = true;
-            SendOrderSell(Bestorder.asks - 0.01)
+            var valuenew = Bestorder.bids - 0.01;
+            if (TradeLimits.SELL.min > valuenew ) {
+              valuenew = TradeLimits.SELL.min
+            }
+            if (TradeLimits.SELL.max < valuenew ) {
+              valuenew = TradeLimits.SELL.max
+            }
+            SendOrderSell(valuenew)
           }
         } else if ((parseFloat(orderbook['asks'][0][0]) + 0.01).toFixed(2) != parseFloat(orderbook['asks'][1][0])) {
+          if (TradeLimits.SELL.min > Bestorder.asks - 0.01 || TradeLimits.SELL.max < Bestorder.asks - 0.01) {return}
   				myOrdersList_Remove("2");
   			}
       }
@@ -359,7 +407,6 @@ function SendOrderSell(price) {
 }
 function deleteOrder(myOrders) {
 	blinktradeFOX.cancelOrder({ orderID: myOrders.OrderID, clientId: myOrders.ClOrdID }).then(function(order) {
-		console.log(order)
     logConsole("***************************************************")
 	  logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "] Foxbit Order Cancelled:");
 	  logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "] Order Date: " + myOrders.OrderDate);
