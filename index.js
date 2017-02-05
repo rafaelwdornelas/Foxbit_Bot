@@ -19,7 +19,7 @@ var Bestorder = {bids: 0,asks: 0};
 var enableorder = {bids: false,asks: false};
 var TradeLimits = {
 						BUY: {
-              active: false, //There is an active order
+              active: true, //There is an active order
 							min: 0.0, //Minimum purchase value
 							max: 0.0, //Maximum purchase value
 							amount: 0.0001 //Total bitcoin value for purchase
@@ -201,15 +201,16 @@ function orderbook() {
            logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "] Bests Order Book: Buy: " + Bestorder.bids  + " BRL | Sell: " + Bestorder.asks  + " BRL");
            var market_changed = false;
            //Check if the last order made is different from the first order book Buy
-           if (TradeLimits.BUY.active == true) { //colocar true aqui
-             //console.log(currentidbids ,"<>", ClientID,"&&",Bestorder.asks,">",parseFloat(Bestorder.bids - 0.01))
-			       if (currentidbids != ClientID && Bestorder.asks > parseFloat(Bestorder.bids - 0.01)) {
-               console.log("bids ativa?",enableorder.bids)
-               if (enableorder.bids == true) {
+           if (TradeLimits.BUY.active == true) {
+             console.log(currentidbids ,"<>", ClientID,"&&",Bestorder.bids,"<",parseFloat(Bestorder.asks - 0.01))
+						 if (currentidbids != ClientID && Bestorder.bids < parseFloat(Bestorder.asks - 0.01)) {
+							 if (enableorder.bids == true) {
+								 enableorder.bids = false;
                  logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "]\x1b[91m Change bests order book BRL \x1b[0m")
                  beep(1);
                  myOrdersList_Remove("1");
                } else {
+								 enableorder.bids = true;
                  SendOrderBuy(Bestorder.bids + 0.01)
                }
 
@@ -218,19 +219,21 @@ function orderbook() {
   				   }
            }
            if (TradeLimits.SELL.active == true) {
-             //console.log(currentidasks ,"<>", ClientID,"&&",Bestorder.asks,">",parseFloat(Bestorder.bids + 0.01))
-			       if (currentidasks != ClientID && Bestorder.asks > parseFloat(Bestorder.bids + 0.01)) {
-               console.log("asks ativa?",enableorder.asks)
+             //console.log(currentidasks ,"<>", ClientID,"&&",Bestorder.bids,"<",parseFloat(Bestorder.asks + 0.01))
+			       if (currentidasks != ClientID && Bestorder.bids < parseFloat(Bestorder.asks + 0.01)) {
                if (enableorder.asks == true) {
+								 enableorder.asks = false;
                  logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "]\x1b[91m Change bests order book BRL \x1b[0m")
                  beep(1);
                  myOrdersList_Remove("2");
+								 sleep(1000)
                } else {
                  SendOrderSell(Bestorder.asks - 0.01)
                }
 
              } else if ((parseFloat(orderbook['asks'][0][0]) + 0.01).toFixed(2) != parseFloat(orderbook['asks'][1][0])) {
   					        myOrdersList_Remove("2");
+										sleep(1000)
   				   }
            }
         });
@@ -241,34 +244,38 @@ function orderbook() {
 
 
 function myOrdersList_Remove(type) {
-  var i;
-	//Count open orders
-	var count = 0;
-  for (i = 0; i < orderstemp.length; i++) {
-    if (orderstemp[i].OrdStatus =="0") {
-      count++;
-    }
-  }
-  //print Count open orders
-  if (count > 0) {
+	blinktradeFOX.myOrders().then(function(myOrders) {
+		var orderstemp2 = myOrders['OrdListGrp'];
+  	var i;
+		//Count open orders
+		var count = 0;
+  	for (i = 0; i < orderstemp.length; i++) {
+    	if (orderstemp2[i].OrdStatus =="0") {
+      	count++;
+    	}
+  	}
+  	//print Count open orders
+  	if (count > 0) {
 	   logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "] Open orders:" + count);
 		 logConsole("***************************************************");
 
 		 //Scroll through all records
    	 for(i = 0; i < orderstemp.length; i++) {
    	   //Search for open orders
-    	 if (orderstemp[i].OrdStatus =="0" && orderstemp[i].Side ==  type) {
+    	 if (orderstemp2[i].OrdStatus =="0" && orderstemp2[i].Side ==  type) {
     	    //Delete order selected
-          console.log(orderstemp[i])
-    		 	deleteOrder(orderstemp[i]);
+    		 	deleteOrder(orderstemp2[i]);
     	 }
    	 }
-     if (type == "1") {
-       enableorder.bids = false;
-     } else {
-       enableorder.asks = false;
-     }
-  }
+		 myOrdersList_Remove(type)
+
+
+  	} else if (type == "1") {
+			enableorder.bids = false;
+		} else {
+			enableorder.asks = false;
+		}
+	});
 }
 
 requestLedger()
@@ -319,7 +326,7 @@ function myorders() {
 }
 
 function SendOrderBuy(price) {
-	if (TradeLimits.BUY.active == true) { //colocar false
+	if (TradeLimits.BUY.active == false) {
    	  return
   }
 	var amount = TradeLimits.BUY.amount;
@@ -360,6 +367,7 @@ function SendOrderSell(price) {
 }
 function deleteOrder(myOrders) {
 	blinktradeFOX.cancelOrder({ orderID: myOrders.OrderID, clientId: myOrders.ClOrdID }).then(function(order) {
+		console.log(order)
     logConsole("***************************************************")
 	   logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "] Foxbit Order Cancelled:");
 	   logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "] Order Date: " + myOrders.OrderDate);
@@ -416,4 +424,10 @@ function switchLedger(s) {
           default:
             return s;
   		};
+}
+
+function sleep(ms){
+    return new Promise(resolve=>{
+        setTimeout(resolve,ms)
+    })
 }
