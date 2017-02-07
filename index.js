@@ -51,112 +51,102 @@ console.log("*******************************************************");
 
 var server = http.createServer( function(req, res, next) {
 	if (req.method == 'POST') {
-        var body = '';
-        req.on('data', function (data) {
-            body += data;
-            var POST = {};
-            body = body.split('&');
-            for (var i = 0; i < body.length; i++) {
-                var _body = body[i].split("=");
-                POST[_body[0]] = _body[1];
-            }
-            console.log(POST);
-            if(req.url=='/buy') {
-              console.log("POST Buy");
-              if (TradeLimits.BUY.active == false) {
-                TradeLimits.BUY.active = true;
-                TradeLimits.BUY.min = POST.btcbuypriceamountmin;
-                TradeLimits.BUY.max = POST.btcbuypriceamountmax;
-                TradeLimits.BUY.amount = POST.btcbuyamount;
-              } else {
-                TradeLimits.BUY.active = false;
-                TradeLimits.BUY.min = 0;
-                TradeLimits.BUY.max = 0;
-                TradeLimits.BUY.amount = 0;
-                myOrdersList_Remove("1");
-              }
-              res.writeHead(200, {'Content-Type': 'application/json'});
-              res.end(JSON.stringify({ activeNodes: 10 }));
-            } else if (req.url=='/sell') {
-              console.log("POST Sell");
-              if (TradeLimits.SELL.active == false) {
-                TradeLimits.SELL.active = true;
-                TradeLimits.SELL.min = POST.btcsellpriceamountmin;
-                TradeLimits.SELL.max = POST.btcsellpriceamountmax;
-                TradeLimits.SELL.amount = POST.btcsellamount;
-              } else {
-                TradeLimits.SELL.active = false;
-                TradeLimits.SELL.min = 0;
-                TradeLimits.SELL.max = 0;
-                TradeLimits.SELL.amount = 0;
-                myOrdersList_Remove("2");
-              }
-              res.writeHead(200, {'Content-Type': 'application/json'});
-              res.end(JSON.stringify({ activeNodes: 10 }));
-            }
-        });
-        req.on('end', function () {});
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end('post received');
-    }
-    else
-    {
-      	//console.log(req.url);
-    	  if(req.url=='/') {
-			       console.log("Send Page Home");
-         	   var html = fs.readFileSync('static/ws_client.html');
-             // var html = fs.readFileSync('teste.html');
-        	   res.writeHead(200, {'Content-Type': 'text/html'});
-        	   res.end(html);
-    	  } else if (req.url=='/stats') {
-    		    //console.log("GET stats");
-    		    res.writeHead(200, {'Content-Type': 'application/json'});
-            var buy = TradeLimits.BUY.active == false ? "Not" : "Yes";
-            var sell = TradeLimits.SELL.active == false ? "Not" : "Yes";
-    		    res.end(JSON.stringify({ sell: sell, buy: buy}));
-    	  } else if (req.url=='/getBalance') {
-            //console.log("GET /getBalance");
-            res.writeHead(200, {'Content-Type': 'application/json'});
-    		    res.end(JSON.stringify({ BRL: parseFloat(infoBalanceBRL.BRL / 1e8).toFixed(2), BTC: parseFloat(infoBalanceBRL.BTC / 1e8).toFixed(6), ClientID: ClientID }));
-		    } else if (req.url=='/getorderbook') {
-    		    //console.log("GET /getorderbook");
-    		    res.writeHead(200, {'Content-Type': 'application/json'});
-    		    res.end(JSON.stringify(orderbooktemp));
-    	  } else if (req.url=='/getledger') {
-    		    //console.log("GET /getledger");
-    		    res.writeHead(200, {'Content-Type': 'application/json'});
-    		    res.end(JSON.stringify(ledgertemp['LedgerListGrp']));
-    	  } else if (req.url=='/getorders') {
-    		    //console.log("GET getledger");
-    		    res.writeHead(200, {'Content-Type': 'application/json'});
-    		    res.end(JSON.stringify(orderstemp));
-    	  } else {
-          var filePath = '.' + req.url;
-          var extname = path.extname(filePath);
-          switch (extname) {
-            case '.js':
-              contentType = 'text/javascript';
-              break;
-            case '.css':
-              contentType = 'text/css';
-              break;
-            case '.json':
-              contentType = 'application/json';
-              break;
-            case '.png':
-              contentType = 'image/png';
-              break;      
-            case '.jpg':
-              contentType = 'image/jpg';
-              break;
-            case '.wav':
-              contentType = 'audio/wav';
-              break;
-          }
-          getStaticFileContent(res, filePath, contentType);
+    var body = '';
+    req.on('data', function (data) {
+      body += data;
+      var POST = {};
+      body = body.split('&');
+      for (var i = 0; i < body.length; i++) {
+        var _body = body[i].split("=");
+        POST[_body[0]] = _body[1];
+      }
+      console.log(POST);
+      if(req.url=='/buy') {
+        console.log("POST Buy");
+        if (TradeLimits.BUY.active == false) {
+          TradeLimits.BUY.active = true;
+          TradeLimits.BUY.min = POST.btcbuypriceamountmin;
+          TradeLimits.BUY.max = POST.btcbuypriceamountmax;
+          TradeLimits.BUY.amount = POST.btcbuyamount;
+        } else {
+          TradeLimits.BUY.active = false;
+          TradeLimits.BUY.min = 0;
+          TradeLimits.BUY.max = 0;
+          TradeLimits.BUY.amount = 0;
+          myOrdersList_Remove("1");
         }
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({ activeNodes: 10 }));
+      } else if (req.url=='/sell') {
+        console.log("POST Sell");
+        if (TradeLimits.SELL.active == false) {
+          TradeLimits.SELL.active = true;
+          TradeLimits.SELL.min = POST.btcsellpriceamountmin;
+          TradeLimits.SELL.max = POST.btcsellpriceamountmax;
+          TradeLimits.SELL.amount = POST.btcsellamount;
+        } else {
+          TradeLimits.SELL.active = false;
+          TradeLimits.SELL.min = 0;
+          TradeLimits.SELL.max = 0;
+          TradeLimits.SELL.amount = 0;
+          myOrdersList_Remove("2");
+        }
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({ activeNodes: 10 }));
+        }
+      });
+      req.on('end', function () {});
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end('post received');
+  } else {
+    if(req.url=='/') {
+			console.log("Send Page Home");
+      var html = fs.readFileSync('static/ws_client.html');
+      res.writeHead(200, {'Content-Type': 'text/html'});
+      res.end(html);
+    } else if (req.url=='/stats') {
+    	res.writeHead(200, {'Content-Type': 'application/json'});
+      var buy = TradeLimits.BUY.active == false ? "Not" : "Yes";
+      var sell = TradeLimits.SELL.active == false ? "Not" : "Yes";
+    	res.end(JSON.stringify({ sell: sell, buy: buy}));
+    } else if (req.url=='/getBalance') {
+      res.writeHead(200, {'Content-Type': 'application/json'});
+    	res.end(JSON.stringify({ BRL: parseFloat(infoBalanceBRL.BRL / 1e8).toFixed(2), BTC: parseFloat(infoBalanceBRL.BTC / 1e8).toFixed(6), ClientID: ClientID }));
+		} else if (req.url=='/getorderbook') {
+    	res.writeHead(200, {'Content-Type': 'application/json'});
+    	res.end(JSON.stringify(orderbooktemp));
+    } else if (req.url=='/getledger') {
+    	res.writeHead(200, {'Content-Type': 'application/json'});
+    	res.end(JSON.stringify(ledgertemp['LedgerListGrp']));
+    } else if (req.url=='/getorders') {
+    	res.writeHead(200, {'Content-Type': 'application/json'});
+    	res.end(JSON.stringify(orderstemp));
+    } else {
+      var filePath = '.' + req.url;
+      var extname = path.extname(filePath);
+      switch (extname) {
+        case '.js':
+          contentType = 'text/javascript';
+          break;
+        case '.css':
+          contentType = 'text/css';
+          break;
+        case '.json':
+          contentType = 'application/json';
+          break;
+        case '.png':
+          contentType = 'image/png';
+          break;      
+        case '.jpg':
+          contentType = 'image/jpg';
+          break;
+        case '.wav':
+          contentType = 'audio/wav';
+          break;
+      }
+      getStaticFileContent(res, filePath, contentType);
     }
-
+  }
 });
 
 function getStaticFileContent(response, filepath, contentType) {
@@ -230,7 +220,6 @@ function orderbook() {
       var market_changed = false;
       //Check if the last order made is different from the first order book Buy
       if (TradeLimits.BUY.active == true) {
-        //console.log(currentidbids ,"<>", ClientID,"&&",Bestorder.bids,"<",parseFloat(Bestorder.asks - 0.01))
 				if (currentidbids != ClientID && Bestorder.bids < parseFloat(Bestorder.asks - 0.01)) {
           if (enableorder.bids == true) {
             if (TradeLimits.BUY.min > Bestorder.bids + 0.01 || TradeLimits.BUY.max < Bestorder.bids + 0.01) {return}
@@ -255,7 +244,6 @@ function orderbook() {
   			}
       }
       if (TradeLimits.SELL.active == true) {
-        //console.log(currentidasks ,"<>", ClientID,"&&",Bestorder.bids,"<",parseFloat(Bestorder.asks + 0.01))
 			  if (currentidasks != ClientID && Bestorder.bids < parseFloat(Bestorder.asks + 0.01)) {
           if (enableorder.asks == true) {
             if (TradeLimits.SELL.min > Bestorder.asks - 0.01 || TradeLimits.SELL.max < Bestorder.asks - 0.01) {return}
