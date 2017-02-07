@@ -22,7 +22,6 @@
     "blinktrade": "0.0.4",
     "dateformat": "^2.0.0",
     "open": "0.0.5",
-    "set-terminal-title": "^1.0.1",
-    "technicalindicators": "^0.2.14"
+    "set-terminal-title": "^1.0.1"
   }
 }

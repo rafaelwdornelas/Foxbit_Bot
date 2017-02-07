@@ -6,6 +6,7 @@ var setTerminalTitle = require('set-terminal-title');
 var pjson = require('./package.json');
 var config = require('./config.json');
 var http = require('http');
+const path = require('path');
 var fs = require('fs');
 var open = require('open');
 
@@ -129,32 +130,30 @@ var server = http.createServer( function(req, res, next) {
     		    //console.log("GET getledger");
     		    res.writeHead(200, {'Content-Type': 'application/json'});
     		    res.end(JSON.stringify(orderstemp));
-    	  } else if (req.url=='/static/js/jquery.js') {
-            getStaticFileContent(res, 'static/js/jquery.js','text/js');
-        } else if (req.url=='/static/css/bootstrap.min.css') {
-            getStaticFileContent(res, 'static/css/bootstrap.min.css','text/css');
-        } else if (req.url=='/static/css/client-view.css') {
-            getStaticFileContent(res, 'static/css/client-view.css','text/css');
-        } else if (req.url=='/static/font-awesome/css/font-awesome.min.css') {
-            getStaticFileContent(res, 'static/font-awesome/css/font-awesome.min.css','text/css');
-        } else if (req.url=='/static/js/bootstrap.min.js') {
-            getStaticFileContent(res, 'static/js/bootstrap.min.js','text/js');
-        } else if (req.url=='/static/js/client-view.js') {
-            getStaticFileContent(res, 'static/js/client-view.js','text/js');
-        } else if (req.url=='/static/js/vendor/flot/jquery.flot.min.js') {
-            getStaticFileContent(res, 'static/js/vendor/flot/jquery.flot.min.js','text/js');
-        } else if (req.url=='/static/js/vendor/flot/jquery.flot.tooltip.min.js') {
-            getStaticFileContent(res, 'static/js/vendor/flot/jquery.flot.tooltip.min.js','text/js');
-        } else if (req.url=='/static/css/btcdonate.css') {
-            getStaticFileContent(res, 'static/css/btcdonate.css','text/css');
-        } else if (req.url=='/static/js/jquery-1.11.0.min.js') {
-            getStaticFileContent(res, 'static/js/jquery-1.11.0.min.js','text/js');
-        } else if (req.url=='/static/js/jquery.qrcode-0.7.0.min.js') {
-            getStaticFileContent(res, 'static/js/jquery.qrcode-0.7.0.min.js','text/js');
-        } else if (req.url=='/static/js/btcdonate.js') {
-            getStaticFileContent(res, 'static/js/btcdonate.js','text/js');
-        } else if (req.url=='/static/img/ico/favicon.ico') {
-            getStaticFileContent(res, 'static/img/ico/favicon.ico','image/x-icon');
+    	  } else {
+          var filePath = '.' + req.url;
+          var extname = path.extname(filePath);
+          switch (extname) {
+            case '.js':
+              contentType = 'text/javascript';
+              break;
+            case '.css':
+              contentType = 'text/css';
+              break;
+            case '.json':
+              contentType = 'application/json';
+              break;
+            case '.png':
+              contentType = 'image/png';
+              break;      
+            case '.jpg':
+              contentType = 'image/jpg';
+              break;
+            case '.wav':
+              contentType = 'audio/wav';
+              break;
+          }
+          getStaticFileContent(res, filePath, contentType);
         }
     }
 
