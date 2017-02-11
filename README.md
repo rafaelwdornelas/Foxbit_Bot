@@ -23,6 +23,7 @@ Your app should now be running on [localhost:3000](http://localhost:3000/).
 ```
 {
   "key": "YOUKEY",
+  "password": "YOUPASSWORDAPI",
   "secret": "YOUKEYSECRET",
   "currency": "BRL",
   "brokerId": "4"
