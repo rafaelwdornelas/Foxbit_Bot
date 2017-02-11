@@ -366,7 +366,7 @@ function orderbook() {
       if (TradeLimits.SELL.active == true) {
 			  if (currentidasks != ClientID && Bestorder.bids < parseFloat(Bestorder.asks + 0.01)) {
           //New value Calc
-          var valuenew = Bestorder.bids - 0.01;
+          var valuenew = Bestorder.asks - 0.01;
           if (TradeLimits.SELL.min > valuenew ) {
             valuenew = TradeLimits.SELL.min
           }
