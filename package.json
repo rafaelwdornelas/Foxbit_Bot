@@ -1,6 +1,6 @@
 {
   "name": "foxbitbot",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Buy and sell automatic foxbit exchange",
   "main": "index.js",
   "scripts": {
