@@ -1,7 +1,5 @@
 //Import packages
 var dateFormat = require('dateformat');
-var beep = require('beepbeep')
-var setTerminalTitle = require('set-terminal-title');
 var pjson = require('./package.json');
 var config = require('./config.json');
 var http = require('http');
@@ -356,7 +354,6 @@ function orderbook() {
           if (enableorder.bids == true) {
             if (TradeLimits.BUY.min > Bestorder.bids + 0.01 || TradeLimits.BUY.max < Bestorder.bids + 0.01) {return}
             logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "]\x1b[91m Change bests order book BRL \x1b[0m")
-            beep(1);
             deleteOrder(TradeLimits.BUY.OrderID,TradeLimits.BUY.ClOrdID);
           }
           
@@ -384,7 +381,6 @@ function orderbook() {
           if (enableorder.asks == true) {
             if (TradeLimits.SELL.min > Bestorder.asks - 0.01 || TradeLimits.SELL.max < Bestorder.asks - 0.01) {return}
             logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "]\x1b[91m Change bests order book BRL \x1b[0m")
-            beep(1);
             deleteOrder(TradeLimits.SELL.OrderID,TradeLimits.SELL.ClOrdID);
           }
         } else if ((parseFloat(orderbooktemp['asks'][0][0]) + 0.01).toFixed(2) < parseFloat(orderbooktemp['asks'][1][0])) {
@@ -417,7 +413,6 @@ function requestLedger() {
             LedgerIDs.FOX = ledger['LedgerListGrp'][0].LedgerID;
             return
           }
-          beep(3);
           var Operationx = ledger['LedgerListGrp'][i].Operation = "C" ? 'Credit' : 'Debit';
           logConsole("[" + dateFormat(new Date(), "h:MM:ss") + "] <@FOX Trade Ledger | LedgerID: " + ledger['LedgerListGrp'][i].LedgerID + " | Operation: " + Operationx + " | Amount: " + parseFloat(ledger['LedgerListGrp'][i].Amount / 1e8).toFixed(6) + " " + ledger['LedgerListGrp'][i].Currency + " | Description: " +  switchLedger(ledger['LedgerListGrp'][i].Description) + "@>");
           savelog("[" + dateFormat(new Date(), "h:MM:ss") + "] FOX Trade Ledger | LedgerID: " + ledger['LedgerListGrp'][i].LedgerID + " | Operation: " + Operationx + " | Amount: " + parseFloat(ledger['LedgerListGrp'][i].Amount / 1e8) + " " + ledger['LedgerListGrp'][i].Currency + " | Description: " +  switchLedger(ledger['LedgerListGrp'][i].Description));
