@@ -12,35 +12,35 @@
     <title>bitcoin &nbsp;|&nbsp; exchange</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="./static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="./static/css/client-view.css" rel="stylesheet">
+    <link href="./css/client-view.css" rel="stylesheet">
 
     <!-- Favicon -->
-    <link rel="icon" href="./static/img/ico/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./img/ico/favicon.ico" type="image/x-icon">
 
     <!-- Custom Fonts -->
-    <link href="./static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="./font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <!-- Custom Google Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
 
 
     <!-- jQuery -->
-    <script src="./static/js/jquery.js"></script>
+    <script src="./js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="./static/js/bootstrap.min.js"></script>
+    <script src="./js/bootstrap.min.js"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script src="./static/js/client-view.js"></script>
+    <script src="./js/client-view.js"></script>
 
     <!-- Flot -->
-    <script src="./static/js/vendor/flot/jquery.flot.min.js"></script>
-    <script src="./static/js/vendor/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="./js/vendor/flot/jquery.flot.min.js"></script>
+    <script src="./js/vendor/flot/jquery.flot.tooltip.min.js"></script>
 
-   <link rel="stylesheet" href="./static/css/btcdonate.css">
+   <link rel="stylesheet" href="./css/btcdonate.css">
 
 </head>
 
@@ -80,11 +80,13 @@
                     </div>
                     <br>
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-13">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="#buy" data-toggle="tab" id="buy-tab">BUY</a>
                                 </li>
                                 <li class="tab"><a href="#sell" data-toggle="tab" id="sell-tab">SELL</a>
+                                </li>
+                                <li class="tab"><a href="#buysell" data-toggle="tab" id="buysell-tab">Profit</a>
                                 </li>
                             </ul>
 
@@ -132,6 +134,29 @@
                                         <button type="button" class="btn btn-custom btn-primary btn-lg" id="sellx">SELL Start</button>
                                     </div>
                                 </div>
+                                <div class="tab-pane fade" id="buysell">
+                                    <br>
+                                    <input class="form-control" placeholder="Amount (BTC)" id="btc-buysell-amount" type="number">
+                                    <br>
+                                    <input class="form-control" placeholder="Price Minimum / BTC" id="btc-buysell-price-amount-min" type="number">
+                                    <br>
+                                    <input class="form-control" placeholder="Price Maximum / BTC" id="btc-buysell-price-amount-max" type="number">
+                                    <br>
+                                    <input class="form-control" placeholder="% Profit" id="btc-buysell-price-profit" type="number">
+                                    <div class="row">
+                                        <br>
+                                        <div class="col-lg-8">
+                                            <p>Process Enable?</p>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <p class="right" id="btc-buysell-return"><strong>False</strong></p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="centered">
+                                        <button type="button" class="btn btn-custom btn-primary btn-lg" id="buysellx">BUY Start</button>
+                                    </div>
+                                </div>
 
                                 	<div class="row account-actions"><hr></div>
                         			<div class="row account-actions"><div class="col-lg-6">Donate:</div><br>
@@ -140,9 +165,9 @@
                                         data-btcaddress="115mWCwsBqsa4ASEt4WfDs2uoSfcrADPT9">
                                         115mWCwsBqsa4ASEt4WfDs2uoSfcrADPT9
                                     </a>
-                                    <script type="text/javascript" src="./static/js/jquery-1.11.0.min.js"></script>
-                                    <script type="text/javascript" src="./static/js/jquery.qrcode-0.7.0.min.js"></script>
-                                    <script type="text/javascript" src="./static/js/btcdonate.js"></script>
+                                    <script type="text/javascript" src="./js/jquery-1.11.0.min.js"></script>
+                                    <script type="text/javascript" src="./js/jquery.qrcode-0.7.0.min.js"></script>
+                                    <script type="text/javascript" src="./js/btcdonate.js"></script>
 
                                     <script type="text/javascript">
                                         btcdonate({fill: "#000000",radius: 0});
@@ -229,7 +254,57 @@
                 $('#messages').html('<b>'+data.message+'</b>');
          });
     });
+    $('#buysellx').click(function(){
+        if ($('#btc-buysell-amount').val()=="")
+        {
+            alert ("amount not value");
+            return false;
+        }
+        if ($('#btc-buysell-price-amount-min').val()=="")
+        {
+            alert ("price min not value");
+            return false;
+        }
+        if ($('#btc-buysell-price-amount-max').val()=="")
+        {
+            alert ("price max not value");
+            return false;
+        }
+        if ($('#btc-buysell-price-profit').val()=="")
+        {
+            alert ("profit not value");
+            return false;
+        }
+
+        $.ajax({
+            url: "/buysell",
+            type: 'post',
+            data: {
+                'btcbuyamount': $('#btc-buysell-amount').val(),
+                'btcbuypriceamountmin': $('#btc-buysell-price-amount-min').val(),
+                'btcbuypriceamountmax': $('#btc-buysell-price-amount-max').val(),
+                'btcbuysellpriceprofit': $('#btc-buysell-price-profit').val()
+                }
+            }).done(function(data){
+                $('#messages').html('<b>'+data.message+'</b>');
+         });
+    });
     $('#sellx').click(function(){
+        if ($('#btc-sell-amount').val()=="")
+        {
+            alert ("amount not value");
+            return false;
+        }
+        if ($('#btc-sell-price-amount-min').val()=="")
+        {
+            alert ("price min not value");
+            return false;
+        }
+        if ($('#btc-sell-price-amount-max').val()=="")
+        {
+            alert ("price max not value");
+            return false;
+        }
         $.ajax({
             url: "/sell",
             type: 'post',

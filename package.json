@@ -18,8 +18,10 @@
   "author": "Rafael Dornelas: rafaelwdornelas@gmail.com",
   "license": "ISC",
   "dependencies": {
-    "blinktrade": "0.0.4",
+    "blinktrade": "0.0.6",
     "dateformat": "^2.0.0",
+    "hapi": "^16.1.0",
+    "inert": "^4.1.0",
     "open": "0.0.5"
   }
 }
