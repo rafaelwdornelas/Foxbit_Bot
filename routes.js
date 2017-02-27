@@ -21,7 +21,8 @@ module.exports = [
   handler: function (request, reply) {
     var buy = variables.TradeLimits.BUY.active == false ? "Not" : "Yes";
     var sell = variables.TradeLimits.SELL.active == false ? "Not" : "Yes";
-    reply(JSON.stringify({ sell: sell, buy: buy})).code(200).type('application/json').header('Connection', 'keep-alive').header('Cache-Control', 'no-cache');
+    var profit = variables.TradeLimits.PROFIT.active == false ? "Not" : "Yes";
+    reply(JSON.stringify({ sell: sell, buy: buy, profit: profit})).code(200).type('application/json').header('Connection', 'keep-alive').header('Cache-Control', 'no-cache');
   } 
 },
 {
